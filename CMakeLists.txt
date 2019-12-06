@@ -3,4 +3,4 @@ project(CourseProjectMain)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(CourseProjectMain main.cpp)
+add_executable(CourseProjectMain main.cpp FileReader.h FileRecord.h Util.h)

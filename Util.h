@@ -123,4 +123,23 @@ int customCompare(tuple<Args1...> const &t1,
                             sizeof...(Args1), sizeof...(Args2)>::maxValue>::customCompare(t1, t2, levelDifference);
 }
 
+
+
+//======== Tuple Writer ============
+
+template<class Tuple, size_t N>
+struct TupleWriter {
+    static void write(ostream& os, Tuple const& tuple) {
+        TupleWriter<Tuple, N - 1>::write(os, tuple);
+        os << " " << get<N - 1>(tuple);
+    }
+};
+
+template<class Tuple>
+struct TupleWriter<Tuple, 1> {
+    static void write(ostream& os, Tuple const& tuple) {
+        os << get<0>(tuple);
+    }
+};
+
 #endif

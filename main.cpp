@@ -8,63 +8,36 @@
 
 using namespace std;
 
-int compare(string left, string right) {
-    istringstream leftInput(left);
-    istringstream rightInput(right);
+typedef tuple<int, double, int, string> recordSubType;
+typedef key<0, 1, 2> keySubType;
 
-    int k = 0;
-    while (leftInput && rightInput) {
-        leftInput >> left;
-        rightInput >> right;
-        if (left == right) {
-            ++k;
-        } else {
-            break;
-        }
+struct IteratorRecord {
+    int level = 0;
+    int treeNumber = 0;
+    Record<recordSubType, keySubType> value{};
+
+    friend ostream& operator<< (ostream& os, IteratorRecord const& rec) {
+        os << "Level=" << rec.level << ", treeNumber=" << rec.treeNumber << ", value={" << rec.value << "}";
     }
-
-    return k;
-}
+};
 
 int main() {
 
-    int levelDifference = 0;
-    customCompare(make_tuple(1, 1, 3), make_tuple(1, 1, 4), levelDifference);
+    int nMax = 1;
+    stack<IteratorRecord> st;
 
-    typedef tuple<int, double, int, string> recordType;
-    typedef key<0, 1, 2> keyType;
+    IteratorRecord q;
+    q.level = q.treeNumber = 0;
+    FileReader<recordSubType, keySubType> fileReader("../input.txt");
+    Record<recordSubType, keySubType> z = fileReader.readLine(), zBuf = z;
 
-    Record<recordType, keyType> record;
-    auto x = record.key();
-
-    ifstream file("../input.txt");
-
-    FileReader<recordType, keyType> fileReader("../input.txt");
-    auto line = fileReader.readLine();
-    auto keys = line.key();
-    auto keys1 = fileReader.readLine().key();
-    cout << (keys < keys1);
-
-    struct Record {
-        int n = 0;
-        int nt = 0;
-        string rz;
-    };
-
-    int nMax = 4;
-    stack<Record> st;
-
-    Record q;
-    q.n = q.nt = 0;
-    string z, zBuf;
-    getline(file, z);
     int k = 0;
     while (true) {
-        while (q.n <= nMax) {
+        while (q.level <= nMax) {
+            q.value = z;
             st.push(q);
-            ++q.n;
-            q.nt = 1;
-            q.rz = z;
+            ++q.level;
+            q.treeNumber = 1;
         }
 
         if (st.empty()) {
@@ -73,26 +46,27 @@ int main() {
 
         q = st.top();
         st.pop();
-        if (q.n == nMax) {
+        if (q.level == nMax) {
             //print info about the leaf
-            cout << "Leaf with z = " + q.rz << endl;
-            getline(file, zBuf);
-            k = compare(z, zBuf);
+            cout << "Leaf: " << q << endl;
+            zBuf = fileReader.readLine();
+            k = 1;
+            customCompare(z.fields, zBuf.fields, k);
 
             if (k == nMax) {
                 z = zBuf;
-                ++q.nt;
+                ++q.treeNumber;
             } else {
-                q.n = nMax + 1;
+                q.level = nMax + 1;
             }
         } else {
             //print info about the inner node
-            cout << "inner node" << endl;
-            if (q.n == k) {
+            cout << "Inner node: " << "Level=" << q.level << " treeNumber=" << q.treeNumber << endl;
+            if (q.level == k) {
                 z = zBuf;
-                ++q.nt;
+                ++q.treeNumber;
             } else {
-                q.n = nMax + 1;
+                q.level = nMax + 1;
             }
         }
     }

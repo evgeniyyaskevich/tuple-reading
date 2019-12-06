@@ -26,20 +26,20 @@ class Key<tuple<Types...>> {
 public:
     tuple<Types...> keys;
 
-    explicit Key(tuple<Types...> const& _keys) : keys(_keys) {};
+    explicit Key(tuple<Types...> const &_keys) : keys(_keys) {};
 
-    template <typename KeyType>
-    bool operator < (KeyType const& right) {
+    template<typename KeyType>
+    bool operator<(KeyType const &right) {
         return compare(keys, right.keys) < 0;
     }
 
-    template <typename KeyType>
-    bool operator > (KeyType const& right) {
+    template<typename KeyType>
+    bool operator>(KeyType const &right) {
         return compare(keys, right.keys) > 0;
     }
 
-    template <typename KeyType>
-    bool operator == (KeyType const& right) {
+    template<typename KeyType>
+    bool operator==(KeyType const &right) {
         return compare(keys, right.keys) == 0;
     }
 };
@@ -51,15 +51,21 @@ class Record<tuple<Types...>, key<Nums...>> {
 public:
     tuple<Types...> fields;
 
-    Record() {}
-    Record(tuple<Types...> _fields) : fields(_fields) { }
+    Record() = default;
+
+    explicit Record(tuple<Types...> _fields) : fields(_fields) {}
 
     auto key() const {
         auto keyFields = extractKeys<Nums...>(fields);
         return Key<decltype(keyFields)>(keyFields);
     }
 
-    ~Record() { };
+    friend ostream &operator<<(ostream &os, Record const &record) {
+        TupleWriter<decltype(record.fields), sizeof...(Types)>::write(os, record.fields);
+        return os;
+    }
+
+    ~Record() {};
 };
 
 #endif
