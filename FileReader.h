@@ -1,3 +1,6 @@
+#ifndef FILE_READER_H_
+#define FILE_READER_H_
+
 #include "Util.h"
 #include <tuple>
 #include <sstream>
@@ -35,7 +38,7 @@ struct TupleReaderWrapper<tuple<Types...>, Array, Indexes> {
 
 template<typename Tuple>
 decltype(auto) getTuple(string const &s, char delimiter) {
-    istringstream ss(s.c_str());
+    istringstream ss(s);
     const size_t n = tuple_size<Tuple>::value;
     array<string, n> arr;
 
@@ -72,3 +75,5 @@ public:
         in.close();
     }
 };
+
+#endif

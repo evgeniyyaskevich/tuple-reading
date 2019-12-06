@@ -28,6 +28,9 @@ int compare(string left, string right) {
 
 int main() {
 
+    int levelDifference = 0;
+    customCompare(make_tuple(1, 1, 3), make_tuple(1, 1, 4), levelDifference);
+
     typedef tuple<int, double, int, string> recordType;
     typedef key<0, 1, 2> keyType;
 
@@ -39,8 +42,8 @@ int main() {
     FileReader<recordType, keyType> fileReader("../input.txt");
     auto line = fileReader.readLine();
     auto keys = line.key();
-
-    compare("2 2 2 z2", "2 2 2 z2");
+    auto keys1 = fileReader.readLine().key();
+    cout << (keys < keys1);
 
     struct Record {
         int n = 0;

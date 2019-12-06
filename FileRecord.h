@@ -1,3 +1,7 @@
+#ifndef FILE_RECORD_H_
+#define FILE_RECORD_H_
+
+#include "Util.h"
 #include <tuple>
 
 using namespace std;
@@ -23,6 +27,21 @@ public:
     tuple<Types...> keys;
 
     explicit Key(tuple<Types...> const& _keys) : keys(_keys) {};
+
+    template <typename KeyType>
+    bool operator < (KeyType const& right) {
+        return compare(keys, right.keys) < 0;
+    }
+
+    template <typename KeyType>
+    bool operator > (KeyType const& right) {
+        return compare(keys, right.keys) > 0;
+    }
+
+    template <typename KeyType>
+    bool operator == (KeyType const& right) {
+        return compare(keys, right.keys) == 0;
+    }
 };
 
 template<typename... Types, int... Nums>
@@ -42,3 +61,5 @@ public:
 
     ~Record() { };
 };
+
+#endif
