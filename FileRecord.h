@@ -47,7 +47,6 @@ public:
 template<typename... Types, int... Nums>
 class Record<tuple<Types...>, key<Nums...>> {
 
-    //TODO: think about private, protected
 public:
     tuple<Types...> fields;
 
@@ -65,7 +64,7 @@ public:
         return os;
     }
 
-    ~Record() {};
+    ~Record() { };
 };
 
 #endif

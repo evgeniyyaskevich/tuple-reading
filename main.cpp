@@ -23,7 +23,7 @@ struct IteratorRecord {
 
 int main() {
 
-    int nMax = 1;
+    int nMax = 4;
     stack<IteratorRecord> st;
 
     IteratorRecord q;
