@@ -123,8 +123,6 @@ int customCompare(tuple<Args1...> const &t1,
                             sizeof...(Args1), sizeof...(Args2)>::maxValue>::customCompare(t1, t2, levelDifference);
 }
 
-
-
 //======== Tuple Writer ============
 
 template<class Tuple, size_t N>

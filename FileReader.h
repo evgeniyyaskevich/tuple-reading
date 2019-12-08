@@ -53,21 +53,22 @@ decltype(auto) getTuple(string const &s, char delimiter) {
 //================= FileReader =========================
 
 template<typename... Types, int... Indexes>
-class FileReader<tuple<Types...>, key < Indexes...>> {
+class FileReader<tuple<Types...>, key<Indexes...>> {
 
-ifstream in;
+    ifstream in;
+    char delimiter;
 
 public:
-typedef Record <tuple<Types...>, key<Indexes...>> RecordType;
+    typedef Record<tuple<Types...>, key<Indexes...>> RecordType;
 
-    FileReader(string fileName) {
+    FileReader(string fileName, char _delimiter): delimiter(_delimiter)  {
         in.open(fileName);
     }
 
     decltype(auto) readLine() {
         string si;
         if (getline(in, si)) {
-            return RecordType(getTuple<tuple<Types...>>(si, ' '));
+            return RecordType(getTuple<tuple<Types...>>(si, delimiter));
         }
     }
 

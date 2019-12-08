@@ -23,50 +23,49 @@ struct IteratorRecord {
 
 int main() {
 
-    int nMax = 4;
+    IteratorRecord curNode;
     stack<IteratorRecord> st;
-
-    IteratorRecord q;
-    q.level = q.treeNumber = 0;
-    FileReader<recordSubType, keySubType> fileReader("../input.txt");
+    curNode.level = curNode.treeNumber = 0;
+    FileReader<recordSubType, keySubType> fileReader("../input.txt", ' ');
     Record<recordSubType, keySubType> z = fileReader.readLine(), zBuf = z;
+    int maxLevel = 4;
 
     int k = 0;
     while (true) {
-        while (q.level <= nMax) {
-            q.value = z;
-            st.push(q);
-            ++q.level;
-            q.treeNumber = 1;
+        while (curNode.level <= maxLevel) {
+            curNode.value = z;
+            st.push(curNode);
+            ++curNode.level;
+            curNode.treeNumber = 1;
         }
 
         if (st.empty()) {
             break;
         }
 
-        q = st.top();
+        curNode = st.top();
         st.pop();
-        if (q.level == nMax) {
+        if (curNode.level == maxLevel) {
             //print info about the leaf
-            cout << "Leaf: " << q << endl;
+            cout << "Leaf: " << curNode << endl;
             zBuf = fileReader.readLine();
             k = 1;
             customCompare(z.fields, zBuf.fields, k);
 
-            if (k == nMax) {
+            if (k == maxLevel) {
                 z = zBuf;
-                ++q.treeNumber;
+                ++curNode.treeNumber;
             } else {
-                q.level = nMax + 1;
+                curNode.level = maxLevel + 1;
             }
         } else {
             //print info about the inner node
-            cout << "Inner node: " << "Level=" << q.level << " treeNumber=" << q.treeNumber << endl;
-            if (q.level == k) {
+            cout << "Inner node: " << "Level=" << curNode.level << " treeNumber=" << curNode.treeNumber << endl;
+            if (curNode.level == k) {
                 z = zBuf;
-                ++q.treeNumber;
+                ++curNode.treeNumber;
             } else {
-                q.level = nMax + 1;
+                curNode.level = maxLevel + 1;
             }
         }
     }
