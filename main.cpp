@@ -18,6 +18,7 @@ struct IteratorRecord {
 
     friend ostream& operator<< (ostream& os, IteratorRecord const& rec) {
         os << "Level=" << rec.level << ", treeNumber=" << rec.treeNumber << ", value={" << rec.value << "}";
+        return os;
     }
 };
 
