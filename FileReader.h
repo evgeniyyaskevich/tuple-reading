@@ -62,15 +62,14 @@ class FileReader<tuple<Types...>, key<Indexes...>> {
 public:
     typedef Record<tuple<Types...>, key<Indexes...>> RecordType;
 
-    FileReader(string fileName, char _delimiter): delimiter(_delimiter)  {
+    FileReader(string fileName, char _delimiter) : delimiter(_delimiter) {
         in.open(fileName);
     }
 
     RecordType readLine() {
         string si;
-        if (getline(in, si)) {
-            return RecordType(getTuple<tuple<Types...>>(si, delimiter));
-        }
+        getline(in, si);
+        return RecordType(getTuple<tuple<Types...>>(si, delimiter));
     }
 
     bool hasNextLine() {
