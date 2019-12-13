@@ -49,9 +49,14 @@ int main() {
         if (curNode.level == maxLevel) {
             //print info about the leaf
             cout << "Leaf: " << curNode << endl;
-            zBuf = fileReader.readLine();
-            k = 1;
-            customCompare(z.fields, zBuf.fields, k);
+
+            if (fileReader.hasNextLine()) {
+                zBuf = fileReader.readLine();
+                k = 1;
+                customCompare(z.fields, zBuf.fields, k);
+            } else {
+                k = -1;
+            }
 
             if (k == maxLevel) {
                 z = zBuf;

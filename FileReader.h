@@ -3,6 +3,7 @@
 
 #include "Util.h"
 #include <tuple>
+#include <array>
 #include <sstream>
 #include <fstream>
 
@@ -65,11 +66,15 @@ public:
         in.open(fileName);
     }
 
-    decltype(auto) readLine() {
+    RecordType readLine() {
         string si;
         if (getline(in, si)) {
             return RecordType(getTuple<tuple<Types...>>(si, delimiter));
         }
+    }
+
+    bool hasNextLine() {
+        return !in.eof();
     }
 
     ~FileReader() {
